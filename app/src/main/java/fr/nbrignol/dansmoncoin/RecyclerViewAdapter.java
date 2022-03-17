@@ -22,6 +22,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         dataList.add("Encore un autre");
         dataList.add("Et encore un autre");
         dataList.add("Le dernier");
+        dataList.add("Le dernier 1");
+        dataList.add("Le dernier 2");
+        dataList.add("Le dernier 3");
+        dataList.add("Le dernier 4");
+
     }
 
     @NonNull

@@ -18,11 +18,14 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter();
+
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
+
 
     }
 }
