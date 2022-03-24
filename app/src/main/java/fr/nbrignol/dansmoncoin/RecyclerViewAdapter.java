@@ -10,23 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter {
-    List<String> dataList;
+public class RecyclerViewAdapter extends RecyclerView.Adapter implements PoiDaoListener {
 
-    RecyclerViewAdapter(){
-        dataList = new ArrayList<String>();
-        dataList.add("Le super portail de l'IUT");
-        dataList.add("Le batiment \"informatique\"");
-        dataList.add("Le resto-U");
-        dataList.add("Un autre");
-        dataList.add("Encore un autre");
-        dataList.add("Et encore un autre");
-        dataList.add("Le dernier");
-        dataList.add("Le dernier 1");
-        dataList.add("Le dernier 2");
-        dataList.add("Le dernier 3");
-        dataList.add("Le dernier 4");
+    PoiDaoInterface dao;
 
+    RecyclerViewAdapter (){
+        dao = new PoiMockDao();
+        dao.init(this);
     }
 
     @NonNull
@@ -47,11 +37,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.getTextView().setText(dataList.get(position));
+
+        Poi poi = dao.getPoi(position);
+        viewHolder.getTextView().setText(poi.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dao.getCount();
+    }
+
+    @Override
+    public void onDataChanged() {
+        //tell the RecyclerView to refresh
+        notifyDataSetChanged();
+
     }
 }
