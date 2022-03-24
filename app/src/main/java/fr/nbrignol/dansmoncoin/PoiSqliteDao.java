@@ -14,6 +14,8 @@ public class PoiSqliteDao extends SQLiteOpenHelper implements PoiDaoInterface {
 
     PoiDaoListener listener;
     List<Poi> dataList = new ArrayList<Poi>() ;
+    Cursor cursor = null;
+
 
     public PoiSqliteDao(Context context) {
         super(context, "dansmoncoin.db", null, 1);
@@ -28,12 +30,28 @@ public class PoiSqliteDao extends SQLiteOpenHelper implements PoiDaoInterface {
 
     @Override
     public Poi getPoi(int index) {
-        return dataList.get(index);
+        if (cursor == null) {
+            return null;
+        }
+
+        cursor.moveToPosition(index);
+
+        Poi poi = new Poi(cursor.getString(0));
+        poi.setLatitude(cursor.getDouble(1));
+        poi.setLongitude(cursor.getDouble(2));
+        return poi;
+
     }
 
     @Override
     public int getCount() {
-        return dataList.size();
+        if (cursor == null) {
+            return 0;
+        }
+
+        int count = cursor.getCount();
+        Log.d("DB", "... count : " + count);
+        return count;
     }
 
     @Override
@@ -85,19 +103,11 @@ public class PoiSqliteDao extends SQLiteOpenHelper implements PoiDaoInterface {
 
 
 
-        Cursor cursor = this.getReadableDatabase().query(
+        cursor = this.getReadableDatabase().query(
                 table, columns,
                 null, null, null, null, null);
 
-        while(cursor.moveToNext()) {
-            Log.d("DB", cursor.getString(0));
 
-            Poi poi = new Poi(cursor.getString(0));
-            poi.setLatitude(cursor.getDouble(1));
-            poi.setLongitude(cursor.getDouble(2));
-
-            dataList.add(poi);
-        }
 
         listener.onDataChanged();
 
