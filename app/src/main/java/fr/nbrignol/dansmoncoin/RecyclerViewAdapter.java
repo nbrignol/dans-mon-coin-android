@@ -17,6 +17,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter implements PoiDaoL
 
     RecyclerViewAdapter (Context context){
         dao = new PoiSqliteDao(context);
+        //dao = new PoiMockDao();
         dao.init(this);
     }
 

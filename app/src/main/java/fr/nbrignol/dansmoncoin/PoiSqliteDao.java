@@ -7,26 +7,33 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PoiSqliteDao extends SQLiteOpenHelper implements PoiDaoInterface {
 
+    PoiDaoListener listener;
+    List<Poi> dataList = new ArrayList<Poi>() ;
+
     public PoiSqliteDao(Context context) {
-        super(context, "poi0.db", null, 1);
+        super(context, "dansmoncoin.db", null, 1);
         Log.d("DB", "Opening poi.db");
     }
 
     @Override
     public void init(PoiDaoListener listener) {
+        this.listener = listener;
         fetchAll();
     }
 
     @Override
     public Poi getPoi(int index) {
-        return null;
+        return dataList.get(index);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return dataList.size();
     }
 
     @Override
@@ -84,6 +91,15 @@ public class PoiSqliteDao extends SQLiteOpenHelper implements PoiDaoInterface {
 
         while(cursor.moveToNext()) {
             Log.d("DB", cursor.getString(0));
+
+            Poi poi = new Poi(cursor.getString(0));
+            poi.setLatitude(cursor.getDouble(1));
+            poi.setLongitude(cursor.getDouble(2));
+
+            dataList.add(poi);
         }
+
+        listener.onDataChanged();
+
     }
 }
