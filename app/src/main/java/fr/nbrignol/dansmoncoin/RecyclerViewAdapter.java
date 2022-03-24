@@ -1,5 +1,6 @@
 package fr.nbrignol.dansmoncoin;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter implements PoiDaoL
 
     PoiDaoInterface dao;
 
-    RecyclerViewAdapter (){
-        dao = new PoiMockDao();
+    RecyclerViewAdapter (Context context){
+        dao = new PoiSqliteDao(context);
         dao.init(this);
     }
 
